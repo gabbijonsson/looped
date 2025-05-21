@@ -40,19 +40,21 @@ const Index = () => {
       case "home":
         return (
           <div>
-            <div className="bg-white p-6 rounded-lg shadow-md border border-amber-100">
-              <h1 className="text-3xl font-bold text-center text-amber-900 mb-6">Our Epic Cabin Adventure!</h1>
+            <h1 className="text-3xl font-bold text-center text-[#4a3c31] mb-10">Our Epic Cabin Adventure!</h1>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div>
+                <ImageToggle 
+                  primaryImageUrl={primaryImageUrl} 
+                  thumbnailImageUrl={thumbnailImageUrl} 
+                />
+              </div>
               
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div>
-                  <ImageToggle 
-                    primaryImageUrl={primaryImageUrl} 
-                    thumbnailImageUrl={thumbnailImageUrl} 
-                  />
-                </div>
-                
-                <div className="space-y-8">
+              <div className="space-y-8">
+                <div className="bg-[#f0e6e4] p-5 rounded-lg shadow-md">
                   <CountdownTimer targetDate={tripStartDate} />
+                </div>
+                <div className="bg-[#e8e8d5] p-5 rounded-lg shadow-md">
                   <ParticipantShowcase 
                     households={5} 
                     adults={8} 
@@ -93,7 +95,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#f9f5f0]">
       <Navigation activeSection={activeSection} setActiveSection={setActiveSection} />
       
       <div className="max-w-7xl mx-auto px-4 py-8">

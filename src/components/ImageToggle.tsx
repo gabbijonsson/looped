@@ -37,9 +37,6 @@ const ImageToggle = ({ primaryImageUrl, thumbnailImageUrl }: ImageToggleProps) =
             alt="Cabin secondary view" 
             className="w-32 h-24 object-cover"
           />
-          <div className="p-1 bg-amber-50 text-center">
-            <span className="text-xs text-amber-700">Click to swap</span>
-          </div>
         </div>
         
         {/* Placeholder for additional thumbnails */}
