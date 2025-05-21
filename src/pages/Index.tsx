@@ -4,7 +4,6 @@ import Navigation from "@/components/Navigation";
 import CountdownTimer from "@/components/CountdownTimer";
 import ParticipantShowcase from "@/components/ParticipantShowcase";
 import ImageToggle from "@/components/ImageToggle";
-import FunZone from "@/components/FunZone";
 import FoodCoordination from "@/components/FoodCoordination";
 import CabinInformation from "@/components/CabinInformation";
 import TripSchedule from "@/components/TripSchedule";
@@ -40,11 +39,11 @@ const Index = () => {
     switch (activeSection) {
       case "home":
         return (
-          <div className="space-y-6">
-            <div className="bg-white p-4 rounded-lg shadow-md border border-amber-100">
-              <h1 className="text-3xl font-bold text-center text-amber-900 mb-4">Our Epic Cabin Adventure!</h1>
+          <div>
+            <div className="bg-white p-6 rounded-lg shadow-md border border-amber-100">
+              <h1 className="text-3xl font-bold text-center text-amber-900 mb-6">Our Epic Cabin Adventure!</h1>
               
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div>
                   <ImageToggle 
                     primaryImageUrl={primaryImageUrl} 
@@ -52,7 +51,7 @@ const Index = () => {
                   />
                 </div>
                 
-                <div className="space-y-6">
+                <div className="space-y-8">
                   <CountdownTimer targetDate={tripStartDate} />
                   <ParticipantShowcase 
                     households={5} 
@@ -62,13 +61,6 @@ const Index = () => {
                     pets={1} 
                   />
                 </div>
-              </div>
-              
-              <div className="mt-6">
-                <FunZone 
-                  initialMotto="Life is better at the cabin!" 
-                  initialFunFact="Our cabin is located near a waterfall that freezes completely in winter, creating a magical ice sculpture." 
-                />
               </div>
             </div>
           </div>

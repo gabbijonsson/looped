@@ -16,23 +16,35 @@ const ImageToggle = ({ primaryImageUrl, thumbnailImageUrl }: ImageToggleProps) =
   };
 
   return (
-    <div className="space-y-4">
-      <div className="image-slot">
+    <div className="space-y-3">
+      {/* Main image - large display */}
+      <div className="rounded-lg overflow-hidden shadow-md">
         <img 
           src={primaryImage} 
           alt="Cabin primary view" 
-          className="primary-image animate-fade-in"
+          className="w-full aspect-[16/9] object-cover animate-fade-in"
         />
       </div>
       
-      <div className="image-slot" onClick={swapImages}>
-        <img 
-          src={thumbnailImage} 
-          alt="Cabin secondary view" 
-          className="thumbnail-image"
-        />
-        <div className="mt-1 text-center">
-          <span className="text-xs text-amber-600">Click to switch images</span>
+      {/* Thumbnail row */}
+      <div className="flex space-x-2">
+        <div 
+          className="rounded-lg overflow-hidden shadow-md cursor-pointer hover:ring-2 hover:ring-amber-400 transition-all"
+          onClick={swapImages}
+        >
+          <img 
+            src={thumbnailImage} 
+            alt="Cabin secondary view" 
+            className="w-32 h-24 object-cover"
+          />
+          <div className="p-1 bg-amber-50 text-center">
+            <span className="text-xs text-amber-700">Click to swap</span>
+          </div>
+        </div>
+        
+        {/* Placeholder for additional thumbnails */}
+        <div className="rounded-lg overflow-hidden shadow-md bg-amber-50 w-32 h-24 flex items-center justify-center">
+          <span className="text-xs text-amber-700">More coming soon</span>
         </div>
       </div>
     </div>
