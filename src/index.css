@@ -59,11 +59,11 @@
 }
 
 .food-category {
-  @apply bg-white rounded-lg p-6 shadow-md border border-amber-100 hover:shadow-lg transition-shadow;
+  @apply bg-white rounded-lg p-6 shadow-md border border-[#e8e8d5] hover:shadow-lg transition-shadow;
 }
 
 .cabin-info-section {
-  @apply bg-white rounded-lg p-6 shadow-md border border-amber-100 mb-6;
+  @apply bg-white rounded-lg p-6 shadow-md border border-[#e8e8d5] mb-6;
 }
 
 .image-slot {
@@ -83,13 +83,14 @@
 }
 
 .navigation-item.active {
-  @apply bg-amber-100 text-amber-900;
+  @apply bg-[#e8e8d5] text-[#4a3c31];
 }
 
 .navigation-item:not(.active) {
-  @apply hover:bg-amber-50 text-amber-700;
+  @apply hover:bg-[#f0e6e4] text-[#867e74] hover:text-[#4a3c31];
 }
 
 .form-input {
-  @apply rounded-md border border-gray-300 shadow-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500;
+  @apply rounded-md border border-[#d1cdc3] shadow-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#947b5f] focus:border-[#947b5f];
 }
+

@@ -1,15 +1,18 @@
 
 import { useState } from "react";
-import Navigation from "@/components/Navigation";
+import NavigationBar from "@/components/NavigationBar";
 import CountdownTimer from "@/components/CountdownTimer";
 import ParticipantShowcase from "@/components/ParticipantShowcase";
 import ImageToggle from "@/components/ImageToggle";
 import FoodCoordination from "@/components/FoodCoordination";
 import CabinInformation from "@/components/CabinInformation";
 import TripSchedule from "@/components/TripSchedule";
+import { useAuth } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState("home");
+  const { isAuthenticated } = useAuth();
 
   // Placeholder data - these would be fetched from an API or database in a real app
   const tripStartDate = new Date("May 28, 2025");
@@ -69,24 +72,32 @@ const Index = () => {
         );
         
       case "food":
-        return <FoodCoordination />;
+        return (
+          <ProtectedRoute>
+            <FoodCoordination />
+          </ProtectedRoute>
+        );
         
       case "info":
         return (
-          <CabinInformation 
-            parkingInfo={parkingInfo}
-            amenitiesInfo={cabinAmenities}
-            activitiesInfo={localActivities}
-          />
+          <ProtectedRoute>
+            <CabinInformation 
+              parkingInfo={parkingInfo}
+              amenitiesInfo={cabinAmenities}
+              activitiesInfo={localActivities}
+            />
+          </ProtectedRoute>
         );
         
       case "schedule":
         return (
-          <TripSchedule 
-            checkInDate="May 28th, 15:00" 
-            checkOutDate="June 1st, 11:00" 
-            dinnerReservation={dinnerReservation}
-          />
+          <ProtectedRoute>
+            <TripSchedule 
+              checkInDate="May 28th, 15:00" 
+              checkOutDate="June 1st, 11:00" 
+              dinnerReservation={dinnerReservation}
+            />
+          </ProtectedRoute>
         );
         
       default:
@@ -96,7 +107,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-[#f9f5f0]">
-      <Navigation activeSection={activeSection} setActiveSection={setActiveSection} />
+      <NavigationBar activeSection={activeSection} setActiveSection={setActiveSection} />
       
       <div className="max-w-7xl mx-auto px-4 py-8">
         {renderActiveSection()}
