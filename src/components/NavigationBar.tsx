@@ -1,14 +1,16 @@
-
 import { LogOut, User, Settings } from "lucide-react";
-import { useAuth } from '@/contexts/AuthContext';
-import { Link } from 'react-router-dom';
+import { useAuth } from "@/contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 interface NavigationBarProps {
   activeSection: string;
   setActiveSection: (section: string) => void;
 }
 
-const NavigationBar = ({ activeSection, setActiveSection }: NavigationBarProps) => {
+const NavigationBar = ({
+  activeSection,
+  setActiveSection,
+}: NavigationBarProps) => {
   const { currentUser, isAuthenticated, logout, isAdmin } = useAuth();
 
   return (
@@ -16,62 +18,82 @@ const NavigationBar = ({ activeSection, setActiveSection }: NavigationBarProps) 
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <h1 className="text-xl font-bold text-[#4a3c31]">CabinVibe</h1>
+            <h1 className="text-xl font-bold text-[#4a3c31]">Looped</h1>
           </div>
-          
+
           <div className="hidden md:flex md:items-center md:space-x-4">
             <button
-              onClick={() => setActiveSection('home')}
-              className={`navigation-item ${activeSection === 'home' ? 'active' : ''}`}
+              onClick={() => setActiveSection("home")}
+              className={`px-3 py-2 text-sm focus:outline-none tracking-wider ${
+                activeSection === "home"
+                  ? "font-bold text-[#4a3c31] border-b-2 border-[#4a3c31]"
+                  : "font-medium text-[#947b5f] hover:text-[#4a3c31]"
+              }`}
             >
-              Home
+              Hem
             </button>
-            
+
             {isAuthenticated && (
               <>
                 <button
-                  onClick={() => setActiveSection('food')}
-                  className={`navigation-item ${activeSection === 'food' ? 'active' : ''}`}
+                  onClick={() => setActiveSection("food")}
+                  className={`px-3 py-2 text-sm focus:outline-none tracking-wider ${
+                    activeSection === "food"
+                      ? "font-bold text-[#4a3c31] border-b-2 border-[#4a3c31]"
+                      : "font-medium text-[#947b5f] hover:text-[#4a3c31]"
+                  }`}
                 >
-                  Food
+                  Mat
                 </button>
-                
+
                 <button
-                  onClick={() => setActiveSection('info')}
-                  className={`navigation-item ${activeSection === 'info' ? 'active' : ''}`}
+                  onClick={() => setActiveSection("info")}
+                  className={`px-3 py-2 text-sm focus:outline-none tracking-wider ${
+                    activeSection === "info"
+                      ? "font-bold text-[#4a3c31] border-b-2 border-[#4a3c31]"
+                      : "font-medium text-[#947b5f] hover:text-[#4a3c31]"
+                  }`}
                 >
-                  Info
+                  Information
                 </button>
-                
+
                 <button
-                  onClick={() => setActiveSection('schedule')}
-                  className={`navigation-item ${activeSection === 'schedule' ? 'active' : ''}`}
+                  onClick={() => setActiveSection("schedule")}
+                  className={`px-3 py-2 text-sm focus:outline-none tracking-wider ${
+                    activeSection === "schedule"
+                      ? "font-bold text-[#4a3c31] border-b-2 border-[#4a3c31]"
+                      : "font-medium text-[#947b5f] hover:text-[#4a3c31]"
+                  }`}
                 >
-                  Schedule
+                  Planering
                 </button>
               </>
             )}
           </div>
-          
+
           <div className="flex items-center space-x-2">
             {isAuthenticated ? (
               <div className="flex items-center">
                 <div className="text-[#4a3c31] hidden md:block mr-4">
                   <span className="font-medium">{currentUser?.username}</span>
-                  {isAdmin && <span className="ml-2 px-2 py-0.5 text-xs bg-[#947b5f] text-white rounded-full">Admin</span>}
+                  {isAdmin && (
+                    <span className="ml-2 px-2 py-0.5 text-xs bg-[#947b5f] text-white rounded-full">
+                      Admin
+                    </span>
+                  )}
                 </div>
-                
+
                 {isAdmin && (
-                  <Link 
-                    to="/admin" 
+                  <Link
+                    to="/admin"
                     className="flex items-center justify-center w-10 h-10 rounded-full text-[#4a3c31] hover:bg-[#e8e8d5]"
                     title="Admin Settings"
                   >
                     <Settings size={20} />
                   </Link>
                 )}
-                
-                <button 
+
+                <button
                   onClick={logout}
                   className="flex items-center justify-center w-10 h-10 rounded-full text-[#4a3c31] hover:bg-[#e8e8d5]"
                   title="Logout"
@@ -80,7 +102,7 @@ const NavigationBar = ({ activeSection, setActiveSection }: NavigationBarProps) 
                 </button>
               </div>
             ) : (
-              <Link 
+              <Link
                 to="/login"
                 className="flex items-center justify-center w-10 h-10 rounded-full text-[#4a3c31] hover:bg-[#e8e8d5]"
                 title="Login"
@@ -91,36 +113,52 @@ const NavigationBar = ({ activeSection, setActiveSection }: NavigationBarProps) 
           </div>
         </div>
       </div>
-      
+
       {/* Mobile navigation */}
       <div className="md:hidden border-t border-[#d1cdc3]">
         <div className="grid grid-cols-4 px-2 py-2">
           <button
-            onClick={() => setActiveSection('home')}
-            className={`flex flex-col items-center py-2 ${activeSection === 'home' ? 'text-[#947b5f]' : 'text-[#4a3c31]'}`}
+            onClick={() => setActiveSection("home")}
+            className={`flex flex-col items-center py-2 w-full tracking-wider ${
+              activeSection === "home"
+                ? "font-semibold text-[#4a3c31] border-b-2 border-[#4a3c31]"
+                : "text-[#947b5f]"
+            }`}
           >
             <span className="text-xs">Home</span>
           </button>
-          
+
           {isAuthenticated && (
             <>
               <button
-                onClick={() => setActiveSection('food')}
-                className={`flex flex-col items-center py-2 ${activeSection === 'food' ? 'text-[#947b5f]' : 'text-[#4a3c31]'}`}
+                onClick={() => setActiveSection("food")}
+                className={`flex flex-col items-center py-2 w-full tracking-wider ${
+                  activeSection === "food"
+                    ? "font-semibold text-[#4a3c31] border-b-2 border-[#4a3c31]"
+                    : "text-[#947b5f]"
+                }`}
               >
                 <span className="text-xs">Food</span>
               </button>
-              
+
               <button
-                onClick={() => setActiveSection('info')}
-                className={`flex flex-col items-center py-2 ${activeSection === 'info' ? 'text-[#947b5f]' : 'text-[#4a3c31]'}`}
+                onClick={() => setActiveSection("info")}
+                className={`flex flex-col items-center py-2 w-full tracking-wider ${
+                  activeSection === "info"
+                    ? "font-semibold text-[#4a3c31] border-b-2 border-[#4a3c31]"
+                    : "text-[#947b5f]"
+                }`}
               >
                 <span className="text-xs">Info</span>
               </button>
-              
+
               <button
-                onClick={() => setActiveSection('schedule')}
-                className={`flex flex-col items-center py-2 ${activeSection === 'schedule' ? 'text-[#947b5f]' : 'text-[#4a3c31]'}`}
+                onClick={() => setActiveSection("schedule")}
+                className={`flex flex-col items-center py-2 w-full tracking-wider ${
+                  activeSection === "schedule"
+                    ? "font-semibold text-[#4a3c31] border-b-2 border-[#4a3c31]"
+                    : "text-[#947b5f]"
+                }`}
               >
                 <span className="text-xs">Schedule</span>
               </button>

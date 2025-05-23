@@ -1,0 +1,140 @@
+{
+  "tripStartDate": "2025-05-29",
+  "tripStartDateFull": "2025-05-29T15:00:00",
+  "tripEndDate": "2025-05-31",
+  "tripEndDateFull": "2025-05-31T10:00:00",
+  "checkInDate": "2025-05-28",
+  "checkInDateFull": "2025-05-28T15:00:00",
+  "checkOutDate": "2025-06-01",
+  "checkOutDateFull": "2025-06-01T10:00:00",
+  "participants": [
+    {
+      "lastName": "Julin",
+      "household": 1,
+      "members": [
+        {
+          "name": "Daniel",
+          "age": 38,
+          "household": 1
+        },
+        {
+          "name": "Anna",
+          "age": 36,
+          "household": 1
+        },
+        {
+          "name": "Alba",
+          "age": 4,
+          "household": 1
+        }
+      ]
+    },
+    {
+      "lastName": "Jonsson",
+      "household": 2,
+      "dogs": ["Sudo"],
+      "members": [
+        {
+          "name": "Axel",
+          "age": 31,
+          "household": 2
+        },
+        {
+          "name": "Gabrielle",
+          "age": 36,
+          "household": 2
+        },
+        {
+          "name": "Thor",
+          "age": 16,
+          "household": 2
+        }
+      ]
+    },
+
+    {
+      "lastName": "Olofsson",
+      "household": 3,
+      "members": [
+        {
+          "name": "Inger",
+          "age": 67,
+          "household": 3
+        }
+      ]
+    },
+    {
+      "lastName": "Olofsson",
+      "household": 4,
+      "members": [
+        {
+          "name": "Mikael",
+          "age": 35,
+          "household": 4
+        }
+      ]
+    },
+    {
+      "lastName": "Jonsson",
+      "household": 5,
+      "members": [
+        {
+          "name": "Mia",
+          "age": 65,
+          "household": 5
+        },
+        {
+          "name": "Håkan",
+          "age": 66,
+          "household": 5
+        }
+      ]
+    }
+  ],
+  "reservations": [
+    {
+      "date": "2025-05-30",
+      "time": "17:00",
+      "location": "Restaurang Höganloft",
+      "reservationType": "Middag",
+      "link": "https://www.isaberg.com/media/xpbljic3/isaberg-ho-ganloft-2504-a-la-carte.pdf"
+    }
+  ],
+  "information": {
+    "parking": "Minst två parkeringsplatser vid stugan finns tillgängliga. Man får plats med tre bilar, men kan behöva flytta ned en till receptionen om man blir tillsagd.\n\nElbilsladdning finns både vid stugan och vid receptionen",
+    "activities": [
+      {
+        "name": "Rodelbana",
+        "url": "https://www.isaberg.com/sv/aktiviteter/rodelbana/"
+      },
+      {
+        "name": "Mountainbike",
+        "url": "https://www.isaberg.com/sv/aktiviteter/mountainbike/"
+      },
+      {
+        "name": "Höghöjdsbana",
+        "url": "https://www.isaberg.com/sv/aktiviteter/hoghojdsbana/"
+      },
+      {
+        "name": "Äventyrsgolf",
+        "url": "https://www.isaberg.com/sv/aktiviteter/aeventyrsgolf-discgolf/aeventyrsgolfbanan/"
+      },
+      {
+        "name": "Discgolf",
+        "url": "https://www.isaberg.com/sv/aktiviteter/aeventyrsgolf-discgolf/discgolf/"
+      },
+      {
+        "name": "Sjöaktiviteter",
+        "url": "https://www.isaberg.com/sv/aktiviteter/sjoaktiviteter/"
+      },
+      {
+        "name": "Hinderbana & Utegym",
+        "url": "https://www.isaberg.com/sv/aktiviteter/hinderbana-utegym/"
+      },
+      {
+        "name": "Vandring",
+        "url": "https://www.isaberg.com/sv/aktiviteter/oevrigt/vandring-trailrunning/"
+      }
+    ]
+  }
+}
