@@ -31,7 +31,7 @@ const CategoryTab = ({
       return;
     }
 
-    if (!currentUser?.username) {
+    if (!currentUser?.id) {
       toast.error("You must be logged in to add ingredients");
       return;
     }
@@ -39,7 +39,7 @@ const CategoryTab = ({
     try {
       const { error } = await supabase.from("ingredient").insert({
         name: newItemValue.trim(),
-        created_by: currentUser.username,
+        created_by: currentUser.id.toString(),
         course_id: parseInt(category.id),
       });
 

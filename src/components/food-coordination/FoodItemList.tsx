@@ -55,13 +55,14 @@ const FoodItemList = ({ courseId }: FoodItemListProps) => {
   const fetchIngredients = async () => {
     setLoading(true);
     try {
-      const { data: ingredients, error } = await supabase
+      // First, fetch ingredients
+      const { data: ingredients, error: ingredientsError } = await supabase
         .from("ingredient")
-        .select("*")
+        .select("id, name, created_by")
         .eq("course_id", parseInt(courseId));
 
-      if (error) {
-        console.error("Error fetching ingredients:", error);
+      if (ingredientsError) {
+        console.error("Error fetching ingredients:", ingredientsError);
         return;
       }
 
@@ -70,13 +71,32 @@ const FoodItemList = ({ courseId }: FoodItemListProps) => {
         return;
       }
 
-      // Since created_by is now a username, we can use it directly
+      // Extract unique user IDs
+      const userIds = [...new Set(ingredients.map((ing) => ing.created_by))];
+
+      // Fetch usernames from simpleuser table
+      const { data: users, error: usersError } = await supabase
+        .from("simpleuser")
+        .select("userid, username")
+        .in("userid", userIds);
+
+      if (usersError) {
+        console.error("Error fetching users:", usersError);
+        return;
+      }
+
+      // Create a map of user ID to username
+      const userMap = new Map(
+        users?.map((user) => [user.userid.toString(), user.username]) || []
+      );
+
+      // Combine ingredient data with usernames
       const ingredientsWithUsers: IngredientWithUser[] = ingredients.map(
         (ingredient) => ({
           id: ingredient.id,
           name: ingredient.name,
           created_by: ingredient.created_by,
-          username: ingredient.created_by, // created_by is already the username
+          username: userMap.get(ingredient.created_by) || "Unknown",
         })
       );
 
