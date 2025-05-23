@@ -1,9 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import supabase from "@/util/supabaseClient";
+import { useAuth } from "@/contexts/AuthContext";
+import React from "react";
 
 interface FoodItemListProps {
   courseId: string;
+  onRegisterAddFunction?: (
+    addFunction: (ingredient: IngredientWithUser) => void
+  ) => void;
+  onRegisterDeleteFunction?: (
+    deleteFunction: (ingredientId: number) => void
+  ) => void;
+  onIngredientDeleted?: () => void;
 }
 
 interface IngredientWithUser {
@@ -48,9 +60,72 @@ const getUserColor = (username: string): string => {
   );
 };
 
-const FoodItemList = ({ courseId }: FoodItemListProps) => {
+const FoodItemList = ({
+  courseId,
+  onRegisterAddFunction,
+  onRegisterDeleteFunction,
+  onIngredientDeleted,
+}: FoodItemListProps) => {
   const [ingredients, setIngredients] = useState<IngredientWithUser[]>([]);
   const [loading, setLoading] = useState(true);
+  const { currentUser } = useAuth();
+
+  const addIngredientToList = useCallback(
+    (newIngredient: IngredientWithUser) => {
+      setIngredients((prev) => [...prev, newIngredient]);
+    },
+    []
+  );
+
+  const deleteIngredientFromList = useCallback((ingredientId: number) => {
+    setIngredients((prev) =>
+      prev.filter((ingredient) => ingredient.id !== ingredientId)
+    );
+  }, []);
+
+  // Register the add function with the parent
+  useEffect(() => {
+    if (onRegisterAddFunction) {
+      onRegisterAddFunction(addIngredientToList);
+    }
+  }, [onRegisterAddFunction, addIngredientToList]);
+
+  // Register the delete function with the parent
+  useEffect(() => {
+    if (onRegisterDeleteFunction) {
+      onRegisterDeleteFunction(deleteIngredientFromList);
+    }
+  }, [onRegisterDeleteFunction, deleteIngredientFromList]);
+
+  const handleDeleteIngredient = async (
+    ingredientId: number,
+    ingredientName: string
+  ) => {
+    try {
+      const { error } = await supabase
+        .from("ingredient")
+        .delete()
+        .eq("id", ingredientId);
+
+      if (error) {
+        console.error("Error deleting ingredient:", error);
+        toast.error("Failed to delete ingredient");
+        return;
+      }
+
+      // Remove from UI optimistically since delete was successful
+      deleteIngredientFromList(ingredientId);
+      toast.success(`Removed ${ingredientName}`);
+
+      // Notify parent to update ingredient count
+      if (onIngredientDeleted) {
+        onIngredientDeleted();
+      }
+    } catch (error) {
+      console.error("Error in handleDeleteIngredient:", error);
+      toast.error("Failed to delete ingredient");
+    }
+  };
 
   const fetchIngredients = async () => {
     setLoading(true);
@@ -128,17 +203,17 @@ const FoodItemList = ({ courseId }: FoodItemListProps) => {
 
   return (
     <div className="max-h-96 overflow-y-auto pr-1">
-      <div className="space-y-2">
+      <div className="grid grid-cols-[auto_auto_auto] gap-x-3 gap-y-2 w-fit">
         {ingredients.map((ingredient) => (
-          <div
-            key={ingredient.id}
-            className="flex items-center gap-3 border-b border-[#f0e6e4] pb-2"
-          >
-            <span className="text-[#4a3c31] flex-none max-w-xs truncate">
+          <React.Fragment key={ingredient.id}>
+            {/* Ingredient name - auto-sized based on longest name */}
+            <span className="text-[#4a3c31] truncate border-b border-[#f0e6e4] pb-2">
               {ingredient.name}
             </span>
+
+            {/* User badge - auto-sized based on longest username */}
             <Badge
-              className={`text-xs shrink-0 border-0 ${getUserColor(
+              className={`text-xs shrink-0 border-0 border-b border-transparent pb-2 ${getUserColor(
                 ingredient.username
               )}`}
               style={{
@@ -147,7 +222,27 @@ const FoodItemList = ({ courseId }: FoodItemListProps) => {
             >
               {ingredient.username}
             </Badge>
-          </div>
+
+            {/* Delete button or spacer - consistent column width */}
+            <div className="w-6 flex justify-center border-b border-[#f0e6e4] pb-2">
+              {currentUser?.id.toString() === ingredient.created_by ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 w-6 p-0 text-red-500 hover:text-red-700 hover:bg-red-50 opacity-70 hover:opacity-100 transition-opacity"
+                  onClick={() =>
+                    handleDeleteIngredient(ingredient.id, ingredient.name)
+                  }
+                  title={`Ta bort ${ingredient.name}`}
+                >
+                  <Trash2 className="h-3 w-3" />
+                </Button>
+              ) : (
+                // Empty spacer to maintain column alignment
+                <div className="h-6 w-6" />
+              )}
+            </div>
+          </React.Fragment>
         ))}
       </div>
     </div>

@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import supabase from "@/util/supabaseClient";
 import FoodItemList from "./FoodItemList";
+import { useState, useRef } from "react";
 
 interface CategoryTabProps {
   category: FoodCategory;
@@ -13,6 +14,13 @@ interface CategoryTabProps {
   onAddItem: () => void;
   onToggleItem: (categoryId: string, itemId: string) => void;
   onIngredientAdded: () => void; // Callback to refresh ingredient count
+}
+
+interface IngredientWithUser {
+  id: number;
+  name: string;
+  created_by: string;
+  username: string;
 }
 
 const CategoryTab = ({
@@ -24,6 +32,24 @@ const CategoryTab = ({
   onIngredientAdded,
 }: CategoryTabProps) => {
   const { currentUser } = useAuth();
+  const addIngredientToListRef = useRef<
+    ((ingredient: IngredientWithUser) => void) | null
+  >(null);
+  const deleteIngredientFromListRef = useRef<
+    ((ingredientId: number) => void) | null
+  >(null);
+
+  const handleRegisterAddFunction = (
+    addFunction: (ingredient: IngredientWithUser) => void
+  ) => {
+    addIngredientToListRef.current = addFunction;
+  };
+
+  const handleRegisterDeleteFunction = (
+    deleteFunction: (ingredientId: number) => void
+  ) => {
+    deleteIngredientFromListRef.current = deleteFunction;
+  };
 
   const handleAddIngredient = async () => {
     if (!newItemValue.trim()) {
@@ -37,11 +63,15 @@ const CategoryTab = ({
     }
 
     try {
-      const { error } = await supabase.from("ingredient").insert({
-        name: newItemValue.trim(),
-        created_by: currentUser.id.toString(),
-        course_id: parseInt(category.id),
-      });
+      const { data, error } = await supabase
+        .from("ingredient")
+        .insert({
+          name: newItemValue.trim(),
+          created_by: currentUser.id.toString(),
+          course_id: parseInt(category.id),
+        })
+        .select()
+        .single();
 
       if (error) {
         console.error("Error adding ingredient:", error);
@@ -52,6 +82,16 @@ const CategoryTab = ({
       toast.success(`Added ${newItemValue} to ${category.name}`);
       onNewItemChange(""); // Clear the input
       onIngredientAdded(); // Refresh the ingredient count
+
+      // Add the ingredient directly to the list without refetching
+      if (addIngredientToListRef.current && data) {
+        addIngredientToListRef.current({
+          id: data.id,
+          name: data.name,
+          created_by: data.created_by,
+          username: currentUser.username, // We have the username from current user
+        });
+      }
     } catch (error) {
       console.error("Error in handleAddIngredient:", error);
       toast.error("Failed to add ingredient");
@@ -90,7 +130,12 @@ const CategoryTab = ({
           Denna måltid har en extern meny.
         </p>
       ) : (
-        <FoodItemList courseId={category.id} />
+        <FoodItemList
+          courseId={category.id}
+          onRegisterAddFunction={handleRegisterAddFunction}
+          onRegisterDeleteFunction={handleRegisterDeleteFunction}
+          onIngredientDeleted={onIngredientAdded}
+        />
       )}
     </div>
   );
