@@ -1,4 +1,4 @@
-import { LogOut, User, Settings } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "react-router-dom";
 
@@ -11,7 +11,7 @@ const NavigationBar = ({
   activeSection,
   setActiveSection,
 }: NavigationBarProps) => {
-  const { currentUser, isAuthenticated, logout, isAdmin } = useAuth();
+  const { currentUser, isAuthenticated, logout } = useAuth();
 
   return (
     <nav className="bg-[#f0e6e4] border-b border-[#d1cdc3] shadow-sm">
@@ -74,32 +74,7 @@ const NavigationBar = ({
           <div className="flex items-center space-x-2">
             {isAuthenticated ? (
               <div className="flex items-center">
-                <div className="text-[#4a3c31] hidden md:block mr-4">
-                  <span className="font-medium">{currentUser?.username}</span>
-                  {isAdmin && (
-                    <span className="ml-2 px-2 py-0.5 text-xs bg-[#947b5f] text-white rounded-full">
-                      Admin
-                    </span>
-                  )}
-                </div>
-
-                {isAdmin && (
-                  <Link
-                    to="/admin"
-                    className="flex items-center justify-center w-10 h-10 rounded-full text-[#4a3c31] hover:bg-[#e8e8d5]"
-                    title="Admin Settings"
-                  >
-                    <Settings size={20} />
-                  </Link>
-                )}
-
-                <button
-                  onClick={logout}
-                  className="flex items-center justify-center w-10 h-10 rounded-full text-[#4a3c31] hover:bg-[#e8e8d5]"
-                  title="Logout"
-                >
-                  <LogOut size={20} />
-                </button>
+                                                <div className="text-[#4a3c31] hidden md:block mr-4">                  <span className="font-medium">{currentUser?.username}</span>                </div>                <button                  onClick={() => logout()}                  className="flex items-center justify-center w-10 h-10 rounded-full text-[#4a3c31] hover:bg-[#e8e8d5]"                  title="Logout"                >                  <LogOut size={20} />                </button>
               </div>
             ) : (
               <Link

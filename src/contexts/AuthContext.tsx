@@ -3,23 +3,9 @@ import { toast } from "sonner";
 import supabase from "@/util/supabaseClient";
 import { User } from "@/types/auth";
 
-interface AuthContextType {
-  currentUser: User | null;
-  isAuthenticated: boolean;
-  login: (username: string, password: string) => Promise<boolean>;
-  logout: () => void;
-  isAdmin: boolean;
-  loading: boolean;
-}
+interface AuthContextType {  currentUser: User | null;  isAuthenticated: boolean;  login: (username: string, password: string) => Promise<boolean>;  logout: () => Promise<void>;  loading: boolean;}
 
-export const AuthContext = createContext<AuthContextType>({
-  currentUser: null,
-  isAuthenticated: false,
-  login: async () => false,
-  logout: () => {},
-  isAdmin: false,
-  loading: true,
-});
+export const AuthContext = createContext<AuthContextType>({  currentUser: null,  isAuthenticated: false,  login: async () => false,  logout: async () => {},  loading: true,});
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -27,8 +13,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const isAuthenticated = currentUser !== null;
-  const isAdmin = currentUser?.isAdmin || false;
+    const isAuthenticated = currentUser !== null;
 
   // Check for existing session on app load
   useEffect(() => {
@@ -54,29 +39,47 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     password: string
   ): Promise<boolean> => {
     try {
-      const { data: users, error } = await supabase
-        .from("auth")
-        .select("*")
+      // First, query the simpleuser table to get the email for the username
+      const { data: simpleUsers, error: queryError } = await supabase
+        .from("simpleuser")
+        .select("email")
         .eq("username", username)
-        .eq("password", password)
         .limit(1);
 
-      if (error) {
-        console.error("Login error:", error);
+      if (queryError) {
+        console.error("Error querying simpleuser:", queryError);
         toast.error("Fel vid inloggning");
         return false;
       }
 
-      if (!users || users.length === 0) {
+      if (!simpleUsers || simpleUsers.length === 0) {
         toast.error("Felaktigt användarnamn eller lösenord");
         return false;
       }
 
-      const authUser = users[0];
-      const user: User = {
-        username: authUser.username,
-        isAdmin: authUser.is_admin,
-      };
+      const email = simpleUsers[0].email;
+
+      // Use Supabase authentication with the email and password
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+
+      // Log the authentication response data for validation
+      console.log("Supabase auth response data:", data);
+
+      if (error) {
+        console.error("Authentication error:", error);
+        toast.error("Felaktigt användarnamn eller lösenord");
+        return false;
+      }
+
+      if (!data.user) {
+        toast.error("Inloggning misslyckades");
+        return false;
+      }
+
+      const user: User = {        username: username,      };
 
       setCurrentUser(user);
       localStorage.setItem("cabin-current-user", JSON.stringify(user));
@@ -89,26 +92,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    // Sign out from Supabase
+    await supabase.auth.signOut();
+    
     setCurrentUser(null);
     localStorage.removeItem("cabin-current-user");
     toast.info("Du har loggats ut");
   };
 
-  return (
-    <AuthContext.Provider
-      value={{
-        currentUser,
-        isAuthenticated,
-        login,
-        logout,
-        isAdmin,
-        loading,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+  return (    <AuthContext.Provider      value={{        currentUser,        isAuthenticated,        login,        logout,        loading,      }}    >      {children}    </AuthContext.Provider>  );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext); 

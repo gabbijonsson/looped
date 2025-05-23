@@ -3,10 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "sonner";
-import { useAuth } from "@/contexts/AuthContext";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";import { toast } from "sonner";
 import tripData from "@/static/tripInformation.json"; // Import the JSON data
 import { ExternalLinkIcon } from "lucide-react";
 
@@ -27,18 +24,9 @@ const CabinInformation = ({
   amenitiesInfo,
   activitiesInfo,
 }: CabinInformationProps) => {
-  const { isAdmin } = useAuth();
 
-  const [isParkingEditing, setIsParkingEditing] = useState(false);
-  const [isAmenitiesEditing, setIsAmenitiesEditing] = useState(false);
-  const [editedParking, setEditedParking] = useState(
-    tripData.information.parking
-  );
-  const [editedAmenities, setEditedAmenities] = useState(amenitiesInfo);
 
-  const [activities, setActivities] = useState(tripData.information.activities);
-  const [newActivityName, setNewActivityName] = useState("");
-  const [newActivityUrl, setNewActivityUrl] = useState("");
+    const [activities, setActivities] = useState(tripData.information.activities);
 
   const [linenChoices, setLinenChoices] = useState<LinenChoice[]>([]);
   const [newFamily, setNewFamily] = useState({
@@ -47,31 +35,7 @@ const CabinInformation = ({
     quantity: 1,
   });
 
-  const saveParkingInfo = () => {
-    setIsParkingEditing(false);
-    toast.success("Parking information updated!");
-  };
-
-  const saveAmenitiesInfo = () => {
-    setIsAmenitiesEditing(false);
-    toast.success("Amenities information updated!");
-  };
-
-  const addActivity = () => {
-    if (!newActivityName.trim() || !newActivityUrl.trim()) {
-      toast.error("Please enter both a name and URL for the activity");
-      return;
-    }
-
-    setActivities([
-      ...activities,
-      { name: newActivityName, url: newActivityUrl },
-    ]);
-
-    setNewActivityName("");
-    setNewActivityUrl("");
-    toast.success("Activity added!");
-  };
+  
 
   const addLinenChoice = () => {
     if (!newFamily.name.trim()) {
@@ -107,38 +71,7 @@ const CabinInformation = ({
           {/* Left column */}
           <div className="space-y-6">
             <div className="bg-[#f9f5f0] p-4 rounded-lg border border-[#e8e8d5]">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="text-lg font-bold text-[#4a3c31]">Parkering</h3>
-                {isAdmin && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setIsParkingEditing(!isParkingEditing)}
-                    className="text-[#947b5f] hover:text-[#7f6a52] hover:bg-[#f0e6e4]"
-                  >
-                    {isParkingEditing ? "Cancel" : "Edit"}
-                  </Button>
-                )}
-              </div>
-
-              {isParkingEditing ? (
-                <div className="space-y-2">
-                  <Textarea
-                    value={editedParking}
-                    onChange={(e) => setEditedParking(e.target.value)}
-                    className="border-[#d1cdc3]"
-                    rows={3}
-                  />
-                  <Button
-                    onClick={saveParkingInfo}
-                    className="bg-[#947b5f] hover:bg-[#7f6a52] text-white"
-                  >
-                    Save
-                  </Button>
-                </div>
-              ) : (
-                <p className="text-[#4a3c31]">{editedParking}</p>
-              )}
+                            <div className="flex justify-between items-center mb-2">                <h3 className="text-lg font-bold text-[#4a3c31]">Parkering</h3>              </div>              <p className="text-[#4a3c31]">{tripData.information.parking}</p>
             </div>
 
             <div className="bg-[#f9f5f0] p-4 rounded-lg border border-[#e8e8d5]">
@@ -166,33 +99,7 @@ const CabinInformation = ({
                 ))}
               </div>
 
-              {isAdmin && (
-                <div className="bg-[#f0e6e4] p-3 rounded-md">
-                  <h4 className="font-medium text-[#4a3c31] mb-2">
-                    Add New Activity
-                  </h4>
-                  <div className="grid grid-cols-1 gap-2">
-                    <Input
-                      placeholder="Activity name"
-                      value={newActivityName}
-                      onChange={(e) => setNewActivityName(e.target.value)}
-                      className="border-[#d1cdc3]"
-                    />
-                    <Input
-                      placeholder="URL"
-                      value={newActivityUrl}
-                      onChange={(e) => setNewActivityUrl(e.target.value)}
-                      className="border-[#d1cdc3]"
-                    />
-                  </div>
-                  <Button
-                    onClick={addActivity}
-                    className="mt-2 bg-[#947b5f] hover:bg-[#7f6a52] text-white"
-                  >
-                    Add Activity
-                  </Button>
-                </div>
-              )}
+              
             </div>
           </div>
 
@@ -216,46 +123,7 @@ const CabinInformation = ({
 
               <TabsContent value="amenities" className="mt-4">
                 <div className="bg-[#f9f5f0] p-4 rounded-lg border border-[#e8e8d5]">
-                  <div className="flex justify-between items-center mb-2">
-                    <h3 className="text-lg font-bold text-[#4a3c31]">
-                      Cabin Utilities & Amenities
-                    </h3>
-                    {isAdmin && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() =>
-                          setIsAmenitiesEditing(!isAmenitiesEditing)
-                        }
-                        className="text-[#947b5f] hover:text-[#7f6a52] hover:bg-[#f0e6e4]"
-                      >
-                        {isAmenitiesEditing ? "Cancel" : "Edit"}
-                      </Button>
-                    )}
-                  </div>
-
-                  {isAmenitiesEditing ? (
-                    <div className="space-y-2">
-                      <Textarea
-                        value={editedAmenities}
-                        onChange={(e) => setEditedAmenities(e.target.value)}
-                        className="border-[#d1cdc3]"
-                        rows={8}
-                      />
-                      <Button
-                        onClick={saveAmenitiesInfo}
-                        className="bg-[#947b5f] hover:bg-[#7f6a52] text-white"
-                      >
-                        Save
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="max-h-96 overflow-y-auto">
-                      <p className="text-[#4a3c31] whitespace-pre-line">
-                        {editedAmenities}
-                      </p>
-                    </div>
-                  )}
+                                    <div className="flex justify-between items-center mb-2">                    <h3 className="text-lg font-bold text-[#4a3c31]">                      Cabin Utilities & Amenities                    </h3>                  </div>                  <div className="max-h-96 overflow-y-auto">                    <p className="text-[#4a3c31] whitespace-pre-line">                      {amenitiesInfo}                    </p>                  </div>
                 </div>
               </TabsContent>
 
