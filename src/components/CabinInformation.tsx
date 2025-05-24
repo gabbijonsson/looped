@@ -9,13 +9,11 @@ import { ExternalLinkIcon } from "lucide-react";
 
 interface CabinInformationProps {
   parkingInfo: string;
-  amenitiesInfo: string;
   activitiesInfo: { name: string; url: string }[];
 }
 
 const CabinInformation = ({
   parkingInfo,
-  amenitiesInfo,
   activitiesInfo,
 }: CabinInformationProps) => {
   const [activities, setActivities] = useState(tripData.information.activities);
@@ -67,13 +65,54 @@ const CabinInformation = ({
             <div className="bg-[#f9f5f0] p-4 rounded-lg border border-[#e8e8d5]">
               <div className="flex justify-between items-center mb-2">
                 <h3 className="text-lg font-bold text-[#4a3c31]">
-                  Cabin Utilities & Amenities
+                  Stugans utrustning
                 </h3>
               </div>
-              <div className="max-h-96 overflow-y-auto">
-                <p className="text-[#4a3c31] whitespace-pre-line">
-                  {amenitiesInfo}
-                </p>
+              <div className="max-h-96 overflow-y-auto space-y-4">
+                <div>
+                  <p className="text-[#4a3c31] mb-2">
+                    WiFi tillgängligt i hela stugan
+                  </p>
+                </div>
+                <div>
+                  <h4 className="text-[#4a3c31] font-semibold mb-2">
+                    Fullt utrustat kök:
+                  </h4>
+                  <ul className="list-disc list-inside text-[#4a3c31] space-y-1 ml-4">
+                    <li>Ugn</li>
+                    <li>Induktionshäll</li>
+                    <li>Micro</li>
+                    <li>Diskmaskin</li>
+                    <li>Kyl och frys</li>
+                    <li>Brödrost</li>
+                    <li>Kaffebryggare</li>
+                    <li>Vattenkokare</li>
+                    <li>Kolgrill på uteplatsen</li>
+                    {/* link to the inventory pdf (should be blue) https://www.isaberg.com/media/b2zji5yq/aelgen-inventarier.pdf */}
+                    <li>
+                      <a
+                        href="https://www.isaberg.com/media/b2zji5yq/aelgen-inventarier.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#947b5f] hover:text-[#7f6a52] underline"
+                      >
+                        Inventarie
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-[#4a3c31] font-semibold mb-2">
+                    Sovrum och faciliteter:
+                  </h4>
+                  <ul className="list-disc list-inside text-[#4a3c31] space-y-1 ml-4">
+                    <li>12 bäddar fördelat på fyra sovrum och ett loft</li>
+                    <li>2 toaletter, 3 duschar</li>
+                    <li>Bastu</li>
+                    <li>Torkskåp</li>
+                    <li>Eldstad</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>

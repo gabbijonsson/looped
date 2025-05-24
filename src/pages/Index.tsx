@@ -15,9 +15,6 @@ const Index = () => {
 
   // Placeholder data - these would be fetched from an API or database in a real app
 
-  const cabinAmenities =
-    "WiFi available (password in kitchen drawer)\nDishwasher and full kitchen\nBBQ grill on back deck\n4 bedrooms (2 queen, 4 twin beds)\nFireplace in living room\nHot tub on deck";
-
   const parkingInfo =
     "2 spots available directly at the cabin. Overflow parking available on Pine Street, about 200 meters from the cabin. Please carppool when possible!";
 
@@ -67,7 +64,6 @@ const Index = () => {
           <ProtectedRoute>
             <CabinInformation
               parkingInfo={parkingInfo}
-              amenitiesInfo={cabinAmenities}
               activitiesInfo={localActivities}
             />
           </ProtectedRoute>
