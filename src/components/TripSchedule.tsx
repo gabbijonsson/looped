@@ -7,43 +7,9 @@ import { toast } from "sonner";
 import tripData from "@/static/tripInformation.json"; // Import the JSON data
 import BedLinens from "./food-coordination/BedLinens";
 import GeneralItinerary from "./trip-schedule/GeneralItinerary";
-
-interface ArrivalInfo {
-  id: string;
-  familyName: string;
-  eta: string;
-  transport: string;
-  notes: string;
-}
+import ArrivalCoordination from "./trip-schedule/ArrivalCoordination";
 
 const TripSchedule = () => {
-  const [arrivalInfo, setArrivalInfo] = useState<ArrivalInfo[]>([]);
-  const [newArrival, setNewArrival] = useState<ArrivalInfo>({
-    id: Date.now().toString(),
-    familyName: "",
-    eta: "",
-    transport: "",
-    notes: "",
-  });
-
-  const handleAddArrival = () => {
-    if (!newArrival.familyName || !newArrival.eta || !newArrival.transport) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
-
-    setArrivalInfo([...arrivalInfo, { ...newArrival }]);
-    setNewArrival({
-      id: Date.now().toString(),
-      familyName: "",
-      eta: "",
-      transport: "",
-      notes: "",
-    });
-
-    toast.success("Arrival information added!");
-  };
-
   return (
     <div className="space-y-6">
       <div className="bg-white p-4 rounded-lg shadow-md border border-[#e8e8d5]">
@@ -168,131 +134,8 @@ const TripSchedule = () => {
           </div>
         </div>
 
-        {/* Arrival Coordination Section (moved to the bottom) */}
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="font-bold text-lg text-[#4a3c31]">
-              Arrival Coordination
-            </h3>
-          </div>
-
-          <div className="bg-[#f9f5f0] p-4 rounded-lg border border-[#e8e8d5] mb-4">
-            <h4 className="font-medium text-[#4a3c31] mb-3">
-              Add Your Arrival Details
-            </h4>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="family-name" className="text-[#4a3c31]">
-                  Family Name *
-                </Label>
-                <Input
-                  id="family-name"
-                  value={newArrival.familyName}
-                  onChange={(e) =>
-                    setNewArrival({ ...newArrival, familyName: e.target.value })
-                  }
-                  placeholder="e.g., Smith Family"
-                  className="border-[#d1cdc3]"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="eta" className="text-[#4a3c31]">
-                  Estimated Arrival Time *
-                </Label>
-                <Input
-                  id="eta"
-                  value={newArrival.eta}
-                  onChange={(e) =>
-                    setNewArrival({ ...newArrival, eta: e.target.value })
-                  }
-                  placeholder="e.g., May 28th, 16:00"
-                  className="border-[#d1cdc3]"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="transport" className="text-[#4a3c31]">
-                  Mode of Transportation *
-                </Label>
-                <Input
-                  id="transport"
-                  value={newArrival.transport}
-                  onChange={(e) =>
-                    setNewArrival({ ...newArrival, transport: e.target.value })
-                  }
-                  placeholder="e.g., Car, Train, etc."
-                  className="border-[#d1cdc3]"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="notes" className="text-[#4a3c31]">
-                  Additional Notes (optional)
-                </Label>
-                <Input
-                  id="notes"
-                  value={newArrival.notes}
-                  onChange={(e) =>
-                    setNewArrival({ ...newArrival, notes: e.target.value })
-                  }
-                  placeholder="e.g., Stopping for lunch on the way"
-                  className="border-[#d1cdc3]"
-                />
-              </div>
-            </div>
-
-            <Button
-              onClick={handleAddArrival}
-              className="mt-4 bg-[#947b5f] hover:bg-[#7f6a52] text-white"
-            >
-              Add Arrival Info
-            </Button>
-          </div>
-
-          {arrivalInfo.length > 0 ? (
-            <div className="bg-white rounded-lg border border-[#e8e8d5] overflow-hidden">
-              <table className="min-w-full">
-                <thead className="bg-[#f0e6e4]">
-                  <tr>
-                    <th className="px-4 py-2 text-left text-[#4a3c31]">
-                      Family
-                    </th>
-                    <th className="px-4 py-2 text-left text-[#4a3c31]">ETA</th>
-                    <th className="px-4 py-2 text-left text-[#4a3c31]">
-                      Transportation
-                    </th>
-                    <th className="px-4 py-2 text-left text-[#4a3c31]">
-                      Notes
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {arrivalInfo.map((info, index) => (
-                    <tr
-                      key={info.id}
-                      className={index % 2 === 0 ? "bg-[#f9f5f0]" : "bg-white"}
-                    >
-                      <td className="px-4 py-3 text-[#4a3c31]">
-                        {info.familyName}
-                      </td>
-                      <td className="px-4 py-3 text-[#867e74]">{info.eta}</td>
-                      <td className="px-4 py-3 text-[#867e74]">
-                        {info.transport}
-                      </td>
-                      <td className="px-4 py-3 text-[#867e74]">
-                        {info.notes || "-"}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <p className="text-[#867e74] italic">No arrivals scheduled yet</p>
-          )}
-        </div>
+        {/* Arrival Coordination Section */}
+        <ArrivalCoordination />
       </div>
     </div>
   );
