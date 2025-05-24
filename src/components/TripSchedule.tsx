@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import tripData from "@/static/tripInformation.json"; // Import the JSON data
+import BedLinens from "./food-coordination/BedLinens";
 
 interface ArrivalInfo {
   id: string;
@@ -315,6 +316,14 @@ const TripSchedule = () => {
           ) : (
             <p className="text-[#867e74] italic">No arrivals scheduled yet</p>
           )}
+        </div>
+
+        {/* Bed Linens Section */}
+        <div className="mb-6">
+          <h3 className="font-bold text-lg text-[#4a3c31] mb-3">
+            Bed Linen & Towel Coordination
+          </h3>
+          <BedLinens />
         </div>
       </div>
     </div>
