@@ -68,7 +68,7 @@ const CabinInformation = ({
                   Stugans utrustning
                 </h3>
               </div>
-              <div className="max-h-96 overflow-y-auto space-y-4">
+              <div className="space-y-4">
                 <div>
                   <p className="text-[#4a3c31] mb-2">
                     WiFi tillgängligt i hela stugan
