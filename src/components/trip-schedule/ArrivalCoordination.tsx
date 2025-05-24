@@ -229,12 +229,12 @@ const ArrivalCoordination = () => {
 
   const handleAddArrival = async () => {
     if (!currentUser?.id) {
-      toast.error("You must be logged in to save arrival information");
+      toast.error("Du måste logga in för att lägga till ankomstinformation");
       return;
     }
 
     if (!newArrival.date || !newArrival.time || !newArrival.transportation) {
-      toast.error("Please fill in all required fields");
+      toast.error("Vänligen fyll i alla obligatoriska fält");
       return;
     }
 
@@ -255,7 +255,7 @@ const ArrivalCoordination = () => {
 
         if (error) {
           console.error("Error updating arrival info:", error);
-          toast.error("Failed to update arrival information");
+          toast.error("Misslyckades att uppdatera ankomstinformation");
           return;
         }
 
@@ -265,7 +265,7 @@ const ArrivalCoordination = () => {
           transportation: newArrival.transportation,
           notes: newArrival.notes,
         });
-        toast.success("Arrival information updated!");
+        toast.success("Ankomstinformation uppdaterad!");
       } else {
         // Create new arrival
         const { data, error } = await supabase
@@ -280,14 +280,14 @@ const ArrivalCoordination = () => {
 
         if (error) {
           console.error("Error creating arrival info:", error);
-          toast.error("Failed to save arrival information");
+          toast.error("Misslyckades att spara ankomstinformation");
           return;
         }
 
         if (data && data.length > 0) {
           setExistingArrival(data[0]);
         }
-        toast.success("Arrival information saved!");
+        toast.success("Ankomstinformation sparad!");
       }
 
       // Refresh all arrivals with usernames for display
@@ -298,7 +298,7 @@ const ArrivalCoordination = () => {
       setIsEditing(false);
     } catch (error) {
       console.error("Error saving arrival info:", error);
-      toast.error("Failed to save arrival information");
+      toast.error("Misslyckades att spara ankomstinformation");
     }
   };
 
@@ -334,7 +334,7 @@ const ArrivalCoordination = () => {
 
       if (error) {
         console.error("Error deleting arrival info:", error);
-        toast.error("Failed to delete arrival information");
+        toast.error("Misslyckades att ta bort ankomstinformation");
         return;
       }
 
@@ -352,10 +352,10 @@ const ArrivalCoordination = () => {
       const arrivalsWithUsernames = await fetchArrivalsWithUsernames();
       setArrivalInfo(arrivalsWithUsernames);
 
-      toast.success("Arrival information deleted");
+      toast.success("Ankomstinformation raderad");
     } catch (error) {
       console.error("Error deleting arrival info:", error);
-      toast.error("Failed to delete arrival information");
+      toast.error("Misslyckades att ta bort ankomstinformation");
     }
   };
 
@@ -363,7 +363,7 @@ const ArrivalCoordination = () => {
     return (
       <div className="mb-6">
         <div className="bg-[#f9f5f0] p-4 rounded-lg border border-[#e8e8d5]">
-          <p className="text-[#867e74]">Loading...</p>
+          <p className="text-[#867e74]">Laddar...</p>
         </div>
       </div>
     );

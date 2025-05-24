@@ -53,16 +53,34 @@ const CategoryTab = ({
 
   const handleAddIngredient = async () => {
     if (!newItemValue.trim()) {
-      toast.error("Please enter an ingredient name");
+      toast.error("Vänligen ange namn på en vara");
       return;
     }
 
     if (!currentUser?.id) {
-      toast.error("You must be logged in to add ingredients");
+      toast.error("Du måste vara inloggad för att lägga till varor");
       return;
     }
 
     try {
+      // Check for duplicate ingredients in the same course (case-insensitive)
+      const { data: existingIngredients, error: checkError } = await supabase
+        .from("ingredient")
+        .select("name")
+        .eq("course_id", parseInt(category.id))
+        .ilike("name", newItemValue.trim());
+
+      if (checkError) {
+        console.error("Error checking for duplicates:", checkError);
+        toast.error("Misslyckades att kontrollera dubletter");
+        return;
+      }
+
+      if (existingIngredients && existingIngredients.length > 0) {
+        toast.error(`"${newItemValue.trim()}" finns redan i ${category.name}`);
+        return;
+      }
+
       const { data, error } = await supabase
         .from("ingredient")
         .insert({
@@ -75,11 +93,11 @@ const CategoryTab = ({
 
       if (error) {
         console.error("Error adding ingredient:", error);
-        toast.error("Failed to add ingredient");
+        toast.error("Misslyckades att lägga till vara");
         return;
       }
 
-      toast.success(`Added ${newItemValue} to ${category.name}`);
+      toast.success(`Lade till ${newItemValue} i ${category.name}`);
       onNewItemChange(""); // Clear the input
       onIngredientAdded(); // Refresh the ingredient count
 
@@ -94,7 +112,7 @@ const CategoryTab = ({
       }
     } catch (error) {
       console.error("Error in handleAddIngredient:", error);
-      toast.error("Failed to add ingredient");
+      toast.error("Misslyckades att lägga till vara");
     }
   };
 

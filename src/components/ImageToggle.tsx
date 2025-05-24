@@ -25,7 +25,6 @@ const ImageToggle = () => {
           Object.values(imageModules).map(async (importModule) => {
             try {
               const module = await importModule();
-              console.log("Loaded module:", module);
               return (module as { default: string }).default;
             } catch (err) {
               console.error("Error loading individual image module:", err);

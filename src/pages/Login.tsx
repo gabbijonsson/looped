@@ -25,7 +25,7 @@ const Login = () => {
     setIsLoggingIn(true);
 
     try {
-      const success = await login(username, password);
+      const success = await login(username.toLowerCase(), password);
       if (success) {
         navigate("/");
       }

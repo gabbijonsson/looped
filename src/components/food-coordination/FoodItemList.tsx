@@ -109,7 +109,7 @@ const FoodItemList = ({
 
       if (error) {
         console.error("Error deleting ingredient:", error);
-        toast.error("Failed to delete ingredient");
+        toast.error("Misslyckades med att ta bort en vara");
         return;
       }
 
@@ -123,7 +123,7 @@ const FoodItemList = ({
       }
     } catch (error) {
       console.error("Error in handleDeleteIngredient:", error);
-      toast.error("Failed to delete ingredient");
+      toast.error("Misslyckades med att ta bort en vara");
     }
   };
 
@@ -211,20 +211,22 @@ const FoodItemList = ({
               {ingredient.name}
             </span>
 
-            {/* User badge - auto-sized based on longest username */}
-            <Badge
-              className={`text-xs shrink-0 border-0 border-b border-transparent pb-2 ${getUserColor(
-                ingredient.username
-              )}`}
-              style={{
-                transition: "none",
-              }}
-            >
-              {ingredient.username}
-            </Badge>
+            {/* User badge - auto-sized to content */}
+            <div className="border-b border-transparent pb-2 flex items-center justify-center">
+              <Badge
+                className={`text-xs border-0 w-fit ${getUserColor(
+                  ingredient.username
+                )}`}
+                style={{
+                  transition: "none",
+                }}
+              >
+                {ingredient.username}
+              </Badge>
+            </div>
 
             {/* Delete button or spacer - consistent column width */}
-            <div className="w-6 flex justify-center border-b border-[#f0e6e4] pb-2">
+            <div className="w-6 flex justify-center pb-2">
               {currentUser?.id.toString() === ingredient.created_by ? (
                 <Button
                   variant="ghost"

@@ -113,7 +113,7 @@ const FoodCoordination = () => {
 
   const handleAddItem = (categoryId: string) => {
     if (!newItems[categoryId]?.trim()) {
-      toast.error("Please enter an item");
+      toast.error("Vänligen skriv in en vara");
       return;
     }
 
@@ -121,7 +121,7 @@ const FoodCoordination = () => {
       if (category.id === categoryId) {
         if (!category.items) {
           toast.error(
-            `Cannot add items to "${category.name}" as it does not support item listing.`
+            `Kan inte lägga till varor till "${category.name}" eftersom det inte stödjer varulistor.`
           );
           return category;
         }
@@ -148,7 +148,7 @@ const FoodCoordination = () => {
         ...newItems,
         [categoryId]: "",
       });
-      toast.success(`Added ${newItems[categoryId]} to ${targetCategory.name}`);
+      toast.success(`La till ${newItems[categoryId]} i ${targetCategory.name}`);
     } else if (targetCategory && !targetCategory.items) {
       setNewItems({
         ...newItems,
@@ -192,7 +192,7 @@ const FoodCoordination = () => {
         setCategories(transformedCategories);
       } catch (error) {
         console.error("Error loading courses:", error);
-        toast.error("Failed to load courses");
+        toast.error("Misslyckades att ladda måltider");
       } finally {
         setLoading(false);
       }
@@ -244,13 +244,28 @@ const FoodCoordination = () => {
           Samarbeta kring inköpslistor för planerade måltider och allmäna varor.
         </p>
 
+        {!loading && !showMasterList && (
+          <div className="mb-4">
+            <Button
+              onClick={() => setActiveTab("overview")}
+              variant="outline"
+              size="sm"
+              className={`border-[#e8e8d5] text-[#4a3c31] hover:bg-[#f0e6e4] hover:text-[#4a3c31] ${
+                activeTab === "overview" ? "invisible" : ""
+              }`}
+            >
+              ← Tillbaka till översikt
+            </Button>
+          </div>
+        )}
+
         {loading ? (
           <div className="flex justify-center items-center py-8">
-            <div className="text-[#867e74]">Laddar kurser...</div>
+            <div className="text-[#867e74]">Laddar måltider...</div>
           </div>
         ) : categories.length === 0 ? (
           <div className="flex justify-center items-center py-8">
-            <div className="text-[#867e74]">Inga kurser hittades</div>
+            <div className="text-[#867e74]">Inga måltider hittades</div>
           </div>
         ) : (
           <>

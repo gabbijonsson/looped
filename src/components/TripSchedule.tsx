@@ -118,7 +118,7 @@ const TripSchedule = () => {
                             rel="noopener noreferrer"
                             className="text-[#947b5f] underline hover:text-[#7f6a52] mt-2 self-start"
                           >
-                            View Details / Menu
+                            Visa meny
                           </a>
                         )}
                       </div>

@@ -86,7 +86,7 @@ const BedLinens = () => {
 
   const addLinenChoice = async () => {
     if (!currentUser?.id) {
-      toast.error("You must be logged in to make a selection");
+      toast.error("Du måste vara inloggad för att göra ett val");
       return;
     }
 
@@ -102,12 +102,12 @@ const BedLinens = () => {
 
         if (error) {
           console.error("Error updating bedlinen order:", error);
-          toast.error("Failed to update order");
+          toast.error("Misslyckades att uppdatera beställning");
           return;
         }
 
         setExistingOrder({ ...existingOrder, amount: quantity });
-        toast.success("Bedlinen choice updated!");
+        toast.success("Val för sängkläder uppdaterat!");
       } else {
         // Create new order
         const { data, error } = await supabase
@@ -117,18 +117,18 @@ const BedLinens = () => {
 
         if (error) {
           console.error("Error creating bedlinen order:", error);
-          toast.error("Failed to save order");
+          toast.error("Misslyckades att spara beställning");
           return;
         }
 
         if (data && data.length > 0) {
           setExistingOrder(data[0]);
         }
-        toast.success("Bedlinen choice added!");
+        toast.success("Val för sängkläder tillagt!");
       }
     } catch (error) {
       console.error("Error saving bedlinen order:", error);
-      toast.error("Failed to save order");
+      toast.error("Misslyckades att spara beställning");
     }
   };
 
@@ -139,7 +139,7 @@ const BedLinens = () => {
   if (loading) {
     return (
       <div className="bg-[#f9f5f0] p-4 rounded-lg border border-[#e8e8d5]">
-        <p className="text-[#867e74]">Loading...</p>
+        <p className="text-[#867e74]">Laddar...</p>
       </div>
     );
   }

@@ -78,11 +78,11 @@ const ParticipantShowcase = () => {
                         <div className="flex flex-col items-center text-center w-20">
                           <div className="w-9 h-9 rounded-full bg-[#E4EEF0] flex items-center justify-center mb-1">
                             {member.age > 18 ? (
-                              <User className="w-4 h-4 text-amber-800" />
+                              <User className="w-5 h-5 text-amber-800" />
                             ) : member.age >= 13 ? (
                               <User className="w-[15px] h-[15px] text-amber-800" />
                             ) : (
-                              <User className="w-3 h-3 text-amber-800" />
+                              <User className="w-4 h-4 text-amber-800" />
                             )}
                           </div>
                           <span className="text-xs text-amber-800 break-words">
@@ -117,7 +117,7 @@ const ParticipantShowcase = () => {
                         {member.age > 18 ? (
                           <User className="w-5 h-5 text-amber-800" />
                         ) : member.age >= 13 ? (
-                          <User className="w-[18px] h-[18px] text-amber-800" />
+                          <User className="w-[15px] h-[15px] text-amber-800" />
                         ) : (
                           <Baby className="w-4 h-4 text-amber-800" />
                         )}

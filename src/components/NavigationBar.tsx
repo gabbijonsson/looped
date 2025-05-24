@@ -18,7 +18,12 @@ const NavigationBar = ({
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <h1 className="text-xl font-bold text-[#4a3c31]">Looped</h1>
+            <button
+              onClick={() => setActiveSection("home")}
+              className="text-xl font-bold text-[#4a3c31] hover:text-[#3a2f26] transition-colors cursor-pointer"
+            >
+              Looped
+            </button>
           </div>
 
           <div className="hidden md:flex md:items-center md:space-x-4">
@@ -74,7 +79,20 @@ const NavigationBar = ({
           <div className="flex items-center space-x-2">
             {isAuthenticated ? (
               <div className="flex items-center">
-                                                <div className="text-[#4a3c31] hidden md:block mr-4">                  <span className="font-medium">{currentUser?.username}</span>                </div>                <button                  onClick={() => logout()}                  className="flex items-center justify-center w-10 h-10 rounded-full text-[#4a3c31] hover:bg-[#e8e8d5]"                  title="Logout"                >                  <LogOut size={20} />                </button>
+                <div className="text-[#4a3c31] hidden md:block mr-4">
+                  {" "}
+                  <span className="font-medium">
+                    {currentUser?.username}
+                  </span>{" "}
+                </div>{" "}
+                <button
+                  onClick={() => logout()}
+                  className="flex items-center justify-center w-10 h-10 rounded-full text-[#4a3c31] hover:bg-[#e8e8d5]"
+                  title="Logout"
+                >
+                  {" "}
+                  <LogOut size={20} />{" "}
+                </button>
               </div>
             ) : (
               <Link
@@ -100,7 +118,7 @@ const NavigationBar = ({
                 : "text-[#947b5f]"
             }`}
           >
-            <span className="text-xs">Home</span>
+            <span className="text-xs">Hem</span>
           </button>
 
           {isAuthenticated && (
@@ -113,7 +131,7 @@ const NavigationBar = ({
                     : "text-[#947b5f]"
                 }`}
               >
-                <span className="text-xs">Food</span>
+                <span className="text-xs">Mat</span>
               </button>
 
               <button
@@ -135,7 +153,7 @@ const NavigationBar = ({
                     : "text-[#947b5f]"
                 }`}
               >
-                <span className="text-xs">Schedule</span>
+                <span className="text-xs">Plan</span>
               </button>
             </>
           )}
