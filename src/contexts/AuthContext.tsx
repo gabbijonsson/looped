@@ -76,10 +76,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         email: email,
         password: password,
       });
-
-      // Log the authentication response data for validation
-      console.log("Supabase auth response data:", data);
-
       if (error) {
         console.error("Authentication error:", error);
         toast.error("Felaktigt användarnamn eller lösenord");
