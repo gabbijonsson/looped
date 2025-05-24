@@ -205,7 +205,7 @@ const FoodItemList = ({
     <div className="max-h-96 overflow-y-auto pr-1">
       <div className="grid grid-cols-[auto_auto_auto] gap-x-3 gap-y-2 w-fit">
         {ingredients.map((ingredient) => (
-          <React.Fragment key={ingredient.id}>
+          <div key={ingredient.id} className="contents">
             {/* Ingredient name - auto-sized based on longest name */}
             <span className="text-[#4a3c31] truncate border-b border-[#f0e6e4] pb-2">
               {ingredient.name}
@@ -242,7 +242,7 @@ const FoodItemList = ({
                 <div className="h-6 w-6" />
               )}
             </div>
-          </React.Fragment>
+          </div>
         ))}
       </div>
     </div>

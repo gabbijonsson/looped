@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { ExternalLink } from "lucide-react";
 import { FoodCategory } from "@/types/food";
 
 interface CategoryCardProps {
@@ -28,7 +29,7 @@ const CategoryCard = ({ category, onSelectCategory }: CategoryCardProps) => {
         {category.external_link ? (
           <Button
             variant="link"
-            className="text-[#947b5f] p-0 h-auto hover:text-[#7f6a52]"
+            className="text-[#947b5f] p-0 h-auto hover:text-[#7f6a52] flex items-center gap-1"
             onClick={(e) => {
               e.stopPropagation();
               window.open(
@@ -39,6 +40,7 @@ const CategoryCard = ({ category, onSelectCategory }: CategoryCardProps) => {
             }}
           >
             Visa meny
+            <ExternalLink className="h-3 w-3" />
           </Button>
         ) : (
           <Button

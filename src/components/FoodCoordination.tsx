@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Info, ListChecks } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import supabase from "@/util/supabaseClient";
@@ -198,7 +204,42 @@ const FoodCoordination = () => {
   return (
     <div className="space-y-6">
       <div className="bg-white p-4 rounded-lg shadow-md border border-[#e8e8d5]">
-        <h2 className="text-2xl font-bold text-[#4a3c31] mb-2">Matplanering</h2>
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <h2 className="text-2xl font-bold text-[#4a3c31]">Matplanering</h2>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 w-6 p-0 text-[#867e74] hover:text-[#4a3c31] hover:bg-[#f0e6e4]"
+                >
+                  <Info className="h-4 w-4" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent side="bottom" className="w-80">
+                <p className="text-sm">
+                  Lägg till ingredienser för varje måltid, och använd
+                  sammanställningen för att få en komplett inköpslista med alla
+                  ingredienser. Behöver ni samma vara på flera måltider så ser
+                  ni enkelt vilka måltider den behövs till på sammanställningen.
+                </p>
+              </PopoverContent>
+            </Popover>
+          </div>
+          {!loading && categories.length > 0 && (
+            <Button
+              onClick={() => setShowMasterList(!showMasterList)}
+              variant="outline"
+              className="border-[#e8e8d5] text-[#4a3c31] hover:bg-[#f0e6e4] hover:text-[#4a3c31]"
+            >
+              <span className="hidden sm:inline">
+                {showMasterList ? "Visa måltider" : "Visa sammanställning"}
+              </span>
+              <ListChecks className="h-4 w-4 sm:hidden" />
+            </Button>
+          )}
+        </div>
         <p className="text-[#867e74] mb-4">
           Samarbeta kring inköpslistor för planerade måltider och allmäna varor.
         </p>
@@ -213,16 +254,6 @@ const FoodCoordination = () => {
           </div>
         ) : (
           <>
-            <div className="flex justify-end mb-4">
-              <Button
-                onClick={() => setShowMasterList(!showMasterList)}
-                variant="outline"
-                className="border-[#e8e8d5] text-[#4a3c31] hover:bg-[#f0e6e4] hover:text-[#4a3c31]"
-              >
-                {showMasterList ? "Visa måltider" : "Visa sammanställning"}
-              </Button>
-            </div>
-
             {showMasterList ? (
               <MasterList
                 categories={categories}
@@ -235,7 +266,7 @@ const FoodCoordination = () => {
                 onValueChange={setActiveTab}
                 className="w-full"
               >
-                <TabsList className="bg-[#f0e6e4] mb-4 overflow-x-auto flex w-full justify-start">
+                <TabsList className="bg-[#f0e6e4] mb-4 overflow-x-auto flex w-full justify-start hidden md:flex">
                   <TabsTrigger
                     value="overview"
                     className="data-[state=active]:bg-white data-[state=active]:text-[#4a3c31] text-[#867e74]"
@@ -243,6 +274,7 @@ const FoodCoordination = () => {
                     Översikt
                   </TabsTrigger>
                   {[...categories]
+                    .filter((category) => !category.external_link)
                     .sort((a, b) => {
                       if (a.items && !b.items) return -1;
                       if (!a.items && b.items) return 1;
@@ -271,27 +303,29 @@ const FoodCoordination = () => {
                   </div>
                 </TabsContent>
 
-                {categories.map((category) => (
-                  <TabsContent
-                    key={category.id}
-                    value={category.id}
-                    className="mt-0"
-                  >
-                    <CategoryTab
-                      category={category}
-                      newItemValue={newItems[category.id] || ""}
-                      onNewItemChange={(value) =>
-                        setNewItems({
-                          ...newItems,
-                          [category.id]: value,
-                        })
-                      }
-                      onAddItem={() => handleAddItem(category.id)}
-                      onToggleItem={toggleItemChecked}
-                      onIngredientAdded={refreshIngredientCounts}
-                    />
-                  </TabsContent>
-                ))}
+                {categories
+                  .filter((category) => !category.external_link)
+                  .map((category) => (
+                    <TabsContent
+                      key={category.id}
+                      value={category.id}
+                      className="mt-0"
+                    >
+                      <CategoryTab
+                        category={category}
+                        newItemValue={newItems[category.id] || ""}
+                        onNewItemChange={(value) =>
+                          setNewItems({
+                            ...newItems,
+                            [category.id]: value,
+                          })
+                        }
+                        onAddItem={() => handleAddItem(category.id)}
+                        onToggleItem={toggleItemChecked}
+                        onIngredientAdded={refreshIngredientCounts}
+                      />
+                    </TabsContent>
+                  ))}
               </Tabs>
             )}
           </>
